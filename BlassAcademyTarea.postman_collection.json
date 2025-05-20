@@ -1,0 +1,1515 @@
+{
+	"info": {
+		"_postman_id": "91bfc213-3edf-4cb4-b773-2ac6ac54090c",
+		"name": "BlassAcademyTarea",
+		"description": "Esta colección agrupa los endpoints de la API para la gestión de participantes y videojuegos, además del módulo de autenticación.\n\n### Funcionalidades principales:\n\n- **Auth**: Manejo de autenticación con el endpoint para iniciar sesión (`POST login`).\n    \n- **Participantes**: Operaciones CRUD (Crear, Leer, Actualizar, Eliminar) para la gestión de participantes. Incluye funcionalidades para obtener todos los participantes, buscar, ordenar, filtrar y actualizar tanto completamente como parcialmente.\n    \n- **Videojuegos**: Operaciones CRUD similares para la gestión de videojuegos, incluyendo obtención, búsqueda, ordenamiento, filtrado, creación, actualización y eliminación.\n    \n\nRepositorio: [https://github.com/calvario31/BackendBlassAcademy](https://github.com/calvario31/BackendBlassAcademy)\n\nNo Auth [http://127.0.0.1:3000/](http://127.0.0.1:3000/)\n\nBasic Auth [http://127.0.0.1:3000/basic](http://127.0.0.1:3000/basic)\n\nBearer Auth [http://127.0.0.1:3000/auth](http://127.0.0.1:3000/auth)\n\nSchema: [https://www.jsongenerator.io/schema](https://www.jsongenerator.io/schema)\n\nRandom data: [https://learning.postman.com/docs/tests-and-scripts/write-scripts/variables-list/](https://learning.postman.com/docs/tests-and-scripts/write-scripts/variables-list/)\n\n[Enunciado de la Tarea.](https://drive.google.com/file/d/1pABBKjSyA6oqpO7LYHaCff2aGqB5Mvfg/view?ts=682a5d24)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29548111",
+		"_collection_link": "https://blass0.postman.co/workspace/BlassAcademy~f490a2e6-c3da-4696-8ca0-45665981cee3/collection/29548111-91bfc213-3edf-4cb4-b773-2ac6ac54090c?action=share&source=collection_link&creator=29548111"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"const response = pm.response.json();\r",
+									"\r",
+									"if (response.accessToken && response.accessToken.trim() !== \"\") {\r",
+									"    pm.environment.set(\"accessToken\", response.accessToken);\r",
+									"    console.log(\"Variables guardadas en environment correctamente.\");\r",
+									"} else {\r",
+									"    console.log(\"accessToken está vacío o no existe, no se guardaron variables.\");\r",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"{{username}}\",\r\n  \"password\": \"{{password}}\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{login}}",
+							"host": [
+								"{{login}}"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/auth/login'](http://127.0.0.1:3000/auth/login')  \n\\--header 'Content-Type: application/json'  \n\\--data '{  \n\"username\": \"standard_user\",  \n\"password\": \"secret_blass_academy\"  \n}  \n'\n\nUsuario se autentica en el sistema enviando su nombre de usuario y contraseña. Si las credenciales son válidas, el servidor responderá con un token de acceso para autorizar futuras solicitudes."
+					},
+					"response": []
+				}
+			],
+			"description": "Realizar login."
+		},
+		{
+			"name": "Participantes",
+			"item": [
+				{
+					"name": "ObtenerTodosParticipantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/participantes?sortBy=dislikes&order=asc",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes"
+							],
+							"query": [
+								{
+									"key": "sortBy",
+									"value": "dislikes"
+								},
+								{
+									"key": "order",
+									"value": "asc"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/participantes?sortBy=dislikes&amp;order=asc'](http://127.0.0.1:3000/participantes?sortBy=dislikes&order=asc')\n\nObtiene una lista completa de todos los participantes registrados en el sistema."
+					},
+					"response": []
+				},
+				{
+					"name": "BuscarParticipantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/participantes?nombre=Cloyd",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes"
+							],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "Cloyd"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/participantes?nombre=Cloyd'](http://127.0.0.1:3000/participantes?nombre=Cloyd')\n\nBuscar participante que coincidan con el parametro nombre."
+					},
+					"response": []
+				},
+				{
+					"name": "OrdenarParticipantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/participantes?sortBy=dislikes&order=asc",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes"
+							],
+							"query": [
+								{
+									"key": "sortBy",
+									"value": "dislikes"
+								},
+								{
+									"key": "order",
+									"value": "asc"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/participantes?sortBy=dislikes&amp;order=asc'](http://127.0.0.1:3000/participantes?sortBy=dislikes&order=asc')\n\nOrdena la lista de participantes según el campo `dislikes` en orden ascendente (ASC) o descendente (DESC)."
+					},
+					"response": []
+				},
+				{
+					"name": "FiltrarParticipantes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/participantes?filterBy=plataforma&value=tiktok",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes"
+							],
+							"query": [
+								{
+									"key": "filterBy",
+									"value": "plataforma"
+								},
+								{
+									"key": "value",
+									"value": "tiktok"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/participantes?filterBy=plataforma&amp;value=tiktok'](http://127.0.0.1:3000/participantes?filterBy=plataforma&value=tiktok')\n\nFiltrar la lista de participantes por el campo plataforma."
+					},
+					"response": []
+				},
+				{
+					"name": "ObtenerParticipante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema Validation', () => {\r",
+									"    const schemaString = pm.collectionVariables.get(\"schemaParticipantes\");    \r",
+									"    pm.response.to.have.jsonSchema(schemaString);\r",
+									"});\r",
+									"\r",
+									"pm.test('Verifies participante es mostrado', () => {\r",
+									"    const response = pm.response.json();    \r",
+									"    pm.expect(response.nombre).to.equal(\"David\");\r",
+									"    pm.expect(response.correo).to.equal(\"David_Goy@yahoo.com\");\r",
+									"    pm.expect(response.reaccion.likes).to.equal(210);\r",
+									"    pm.expect(response.reaccion.dislikes).to.equal(1533);\r",
+									"    pm.expect(response.plataforma).to.equal(\"youtube\");    \r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/participantes/20",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes",
+								"20"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/participantes/10'](http://127.0.0.1:3000/participantes/10')\n\nObtener al participante dado un id."
+					},
+					"response": []
+				},
+				{
+					"name": "ObtenerParticipante -404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected message\", function () {\r",
+									"    const responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('Participante con id NotExist no encontrado');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/participantes/NotExist",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes",
+								"NotExist"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/participantes/10'](http://127.0.0.1:3000/participantes/10')\n\nObtener al participante dado un id."
+					},
+					"response": []
+				},
+				{
+					"name": "ObtenerParticipante -401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected message\", function () {\r",
+									"    const responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('No autorizado');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/participantes/20",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes",
+								"20"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/participantes/10'](http://127.0.0.1:3000/participantes/10')\n\nObtener al participante dado un id."
+					},
+					"response": []
+				},
+				{
+					"name": "CrearParticipante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema Validation', () => {\r",
+									"    const schemaString = pm.collectionVariables.get(\"schemaParticipantes\");    \r",
+									"    pm.response.to.have.jsonSchema(schemaString);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{$randomFirstName}}\",\r\n    \"apellido\": \"{{$randomLastName}}\",\r\n    \"correo\": \"{{$randomEmail}}\",\r\n    \"usuario\": \"{{$randomUserName}}\",\r\n    \"clave\": \"{{$randomPassword}}\",\r\n    \"reaccion\": {\r\n        \"likes\": {{$randomInt}},\r\n        \"dislikes\": {{$randomInt}}\r\n    },\r\n    \"plataforma\": \"{{$randomJobType}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/participantes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/participantes'](http://127.0.0.1:3000/participantes')  \n\\--header 'Content-Type: application/json'  \n\\--data-raw '{  \n\"nombre\": \"Blass\",  \n\"apellido\": \"Academy\",  \n\"correo\": \"[blass.academy@gmail.com](https://mailto:blass.academy@gmail.com)\",  \n\"usuario\": \"blassx31\",  \n\"clave\": \"P7MgVQTiCFMWpfA\",  \n\"reaccion\": {  \n\"likes\": 3288,  \n\"dislikes\": 1199  \n},  \n\"plataforma\": \"facebook\"  \n}'\n\nCrear un nuevo participante en el sistema con los datos proporcionados en formato JSON."
+					},
+					"response": []
+				},
+				{
+					"name": "CrearParticipante - 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body 'message' contiene expected error message\", function () {\r",
+									"    pm.expect(pm.response.json().message).to.include(\"Expected ',' or '}' after property value in JSON\");\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{$randomFirstName}}\",\r\n    \"apellido\": \"{{$randomLastName}}\",\r\n    \"correo\": \"{{$randomEmail}}\",\r\n    \"usuario\": \"{{$randomUserName}}\",\r\n    \"clave\": \"{{$randomPassword}}\",\r\n    \"reaccion\": {\r\n        \"likes\": {{$randomInt}},\r\n        \"dislikes\": {{$randomInt}}\r\n    },\r\n    \"plataforma\": \"{{$randomJobType}}\"\r\n\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/participantes",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/participantes'](http://127.0.0.1:3000/participantes')  \n\\--header 'Content-Type: application/json'  \n\\--data-raw '{  \n\"nombre\": \"Blass\",  \n\"apellido\": \"Academy\",  \n\"correo\": \"[blass.academy@gmail.com](https://mailto:blass.academy@gmail.com)\",  \n\"usuario\": \"blassx31\",  \n\"clave\": \"P7MgVQTiCFMWpfA\",  \n\"reaccion\": {  \n\"likes\": 3288,  \n\"dislikes\": 1199  \n},  \n\"plataforma\": \"facebook\"  \n}'\n\nCrear un nuevo participante en el sistema con los datos proporcionados en formato JSON."
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarParticipante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema Validation', () => {\r",
+									"    const schemaString = pm.collectionVariables.get(\"schemaParticipantes\");    \r",
+									"    pm.response.to.have.jsonSchema(schemaString);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Blass\",\r\n    \"apellido\": \"Academy\",\r\n    \"correo\": \"blass.academy@gmail.com\",\r\n    \"usuario\": \"blassx31\",\r\n    \"clave\": \"P7MgVQTiCFMWpfA\",\r\n    \"reaccion\": {\r\n        \"likes\": 3288,\r\n        \"dislikes\": 1199\r\n    },\r\n    \"plataforma\": \"facebook\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/participantes/10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes",
+								"10"
+							]
+						},
+						"description": "Generated from cURL: curl --location --request PUT '[http://127.0.0.1:3000/participantes/10'](http://127.0.0.1:3000/participantes/10')  \n\\--header 'Content-Type: application/json'  \n\\--data-raw '{  \n\"nombre\": \"Blass\",  \n\"apellido\": \"Academy\",  \n\"correo\": \"[blass.academy@gmail.com](https://mailto:blass.academy@gmail.com)\",  \n\"usuario\": \"blassx31\",  \n\"clave\": \"P7MgVQTiCFMWpfA\",  \n\"reaccion\": {  \n\"likes\": 3288,  \n\"dislikes\": 1199  \n},  \n\"plataforma\": \"facebook\"  \n}'\n\nActualizar completamente todos los datos del participante identificado por el ID con la información proporcionada en formato JSON."
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarParcialmenteParticipante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema Validation', () => {\r",
+									"    const schemaString = pm.collectionVariables.get(\"schemaParticipantes\");    \r",
+									"    pm.response.to.have.jsonSchema(schemaString);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Blass\",\r\n    \"apellido\": \"Academy\",\r\n    \"correo\": \"blass.academy@gmail.com\",\r\n    \"usuario\": \"blassx31\",\r\n    \"plataforma\": \"facebook\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/participantes/10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes",
+								"10"
+							]
+						},
+						"description": "Generated from cURL: curl --location --request PATCH '[http://127.0.0.1:3000/participantes/10'](http://127.0.0.1:3000/participantes/10')  \n\\--header 'Content-Type: application/json'  \n\\--data-raw '{  \n\"nombre\": \"Blass\",  \n\"apellido\": \"Academy\",  \n\"correo\": \"[blass.academy@gmail.com](https://mailto:blass.academy@gmail.com)\",  \n\"usuario\": \"blassx31\",  \n\"plataforma\": \"facebook\"  \n}'\n\nActualizar parcialmente algunos campos del participante identificado por el ID con la información proporcionada en formato JSON."
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarParticipante",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/participantes/10",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"participantes",
+								"10"
+							]
+						},
+						"description": "Generated from cURL: curl --location --request DELETE '[http://127.0.0.1:3000/participantes/10'](http://127.0.0.1:3000/participantes/10')\n\nSe elimina al participante seleccionado por el ID."
+					},
+					"response": []
+				}
+			],
+			"description": "Este grupo de endpoints permite gestionar toda la información relacionada con los participantes. Aquí podrás:\n\n- Obtener la lista completa de participantes.\n    \n- Buscar participantes según criterios específicos.\n    \n- Ordenar y filtrar participantes para obtener resultados personalizados.\n    \n- Consultar los detalles de un participante en particular.\n    \n- Crear nuevos participantes en el sistema.\n    \n- Actualizar la información de un participante, ya sea de forma completa o parcial.\n    \n- Eliminar participantes cuando sea necesario.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"const schemaParticipantes = \r",
+							"{  \r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"id\": {\r",
+							"      \"type\": \"integer\"          /* Más específico, si tu id siempre es entero */\r",
+							"    },\r",
+							"    \"nombre\": {\r",
+							"      \"type\": \"string\",\r",
+							"      \"minLength\": 1             /* No aceptar cadenas vacías */\r",
+							"    },\r",
+							"    \"apellido\": {\r",
+							"      \"type\": \"string\",\r",
+							"      \"minLength\": 1\r",
+							"    },\r",
+							"    \"correo\": {\r",
+							"      \"type\": \"string\",\r",
+							"      \"minLength\": 1,\r",
+							"      \"format\": \"email\"          /* Validación adicional para formato correo */\r",
+							"    },\r",
+							"    \"usuario\": {\r",
+							"      \"type\": \"string\",\r",
+							"      \"minLength\": 1\r",
+							"    },\r",
+							"    \"clave\": {\r",
+							"      \"type\": \"string\",\r",
+							"      \"minLength\": 6             /* Por seguridad, mínimo 6 caracteres */\r",
+							"    },\r",
+							"    \"reaccion\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"likes\": {\r",
+							"          \"type\": \"integer\",       /* Likes suelen ser enteros */\r",
+							"          \"minimum\": 0             /* No aceptamos negativos */\r",
+							"        },\r",
+							"        \"dislikes\": {\r",
+							"          \"type\": \"integer\",\r",
+							"          \"minimum\": 0\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"likes\",\r",
+							"        \"dislikes\"\r",
+							"      ],\r",
+							"      \"additionalProperties\": false\r",
+							"    },\r",
+							"    \"plataforma\": {\r",
+							"      \"type\": \"string\",\r",
+							"      \"minLength\": 1\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"id\",\r",
+							"    \"nombre\",\r",
+							"    \"apellido\",\r",
+							"    \"correo\",\r",
+							"    \"usuario\",\r",
+							"    \"clave\",\r",
+							"    \"reaccion\",\r",
+							"    \"plataforma\"\r",
+							"  ],\r",
+							"  \"additionalProperties\": false\r",
+							"}\r",
+							"\r",
+							"pm.collectionVariables.set(\"schemaParticipantes\",schemaParticipantes)"
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Videojuegos",
+			"item": [
+				{
+					"name": "ObtenerTodosVideojuegos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/videojuegos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/videojuegos'](http://127.0.0.1:3000/videojuegos')\n\nObtener la lista de todos los video juegos."
+					},
+					"response": []
+				},
+				{
+					"name": "BuscarVideojuegos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/videojuegos?nombre=Atlas%20Shrugged",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos"
+							],
+							"query": [
+								{
+									"key": "nombre",
+									"value": "Atlas%20Shrugged"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/videojuegos?nombre=Atlas%20Shrugged'](http://127.0.0.1:3000/videojuegos?nombre=Atlas%20Shrugged')\n\nBuscar al video juego que coincida con el nombre."
+					},
+					"response": []
+				},
+				{
+					"name": "OrdenarVideojuegos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/videojuegos?sortBy=epoca&order=asc",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos"
+							],
+							"query": [
+								{
+									"key": "sortBy",
+									"value": "epoca"
+								},
+								{
+									"key": "order",
+									"value": "asc"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/videojuegos?sortBy=epoca&amp;order=asc'](http://127.0.0.1:3000/videojuegos?sortBy=epoca&order=asc')\n\nOrdena la lista de videojuegos según la columna `epoca` en orden ascendente (ASC) o descendente (DESC)."
+					},
+					"response": []
+				},
+				{
+					"name": "FiltrarVideojuegos",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/videojuegos?filterBy=genero&value=comedia",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos"
+							],
+							"query": [
+								{
+									"key": "filterBy",
+									"value": "genero"
+								},
+								{
+									"key": "value",
+									"value": "comedia"
+								}
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/videojuegos?filterBy=genero&amp;value=comedia'](http://127.0.0.1:3000/videojuegos?filterBy=genero&value=comedia')\n\nFiltra todos los videojuegos que cumplan con un criterio específico.  \nPor ejemplo, filtrar por el campo `genero` cuyo valor sea `comedia`."
+					},
+					"response": []
+				},
+				{
+					"name": "ObtenerVideojuego",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema Validation', () => {\r",
+									"    const schemaString = pm.collectionVariables.get(\"schemaVideoJuegos\");    \r",
+									"    pm.response.to.have.jsonSchema(schemaString);\r",
+									"});\r",
+									"\r",
+									"pm.test('Verifies participante es mostrado', () => {\r",
+									"    const response = pm.response.json();    \r",
+									"    pm.expect(response.nombre).to.equal(\"Astro Bot\");\r",
+									"    pm.expect(response.duracion).to.equal(7);\r",
+									"    pm.expect(response.empresa.paginaWeb).to.equal(\"https://winding-zebra.net/\");\r",
+									"    pm.expect(response.empresa.direccion.codigoPostal).to.equal(\"64902-8286\");\r",
+									"    pm.expect(response.empresa.direccion.coordenadas.latitud).to.equal(108.22);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/videojuegos/25",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos",
+								"25"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/videojuegos/5'](http://127.0.0.1:3000/videojuegos/5')\n\nObtener datos del video video juego dado un ID."
+					},
+					"response": []
+				},
+				{
+					"name": "ObtenerVideojuego - 404",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected message\", function () {\r",
+									"    const responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('Videojuego con id NotExists no encontrado');\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/videojuegos/NotExists",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos",
+								"NotExists"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/videojuegos/5'](http://127.0.0.1:3000/videojuegos/5')\n\nObtener datos del video video juego dado un ID."
+					},
+					"response": []
+				},
+				{
+					"name": "ObtenerVideojuego - 401",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 401\", function () {\r",
+									"    pm.response.to.have.status(401);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body contains expected message\", function () {\r",
+									"    const responseBody = pm.response.text();\r",
+									"    pm.expect(responseBody).to.include('No autorizado');\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/videojuegos/25",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos",
+								"25"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/videojuegos/5'](http://127.0.0.1:3000/videojuegos/5')\n\nObtener datos del video video juego dado un ID."
+					},
+					"response": []
+				},
+				{
+					"name": "CrearVideojuego",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema Validation', () => {\r",
+									"    const schemaString = pm.collectionVariables.get(\"schemaVideoJuegos\");    \r",
+									"    pm.response.to.have.jsonSchema(schemaString);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"{{$randomProductName}}\",\r\n    \"epoca\": 2024,\r\n    \"precio\": {{$randomPrice}},\r\n    \"duracion\": 7,\r\n    \"genero\": \"{{$randomNoun}}\",\r\n    \"empresa\": {\r\n        \"nombre\": \"{{$randomCompanyName}}\",\r\n        \"paginaWeb\": \"{{$randomUrl}}\",\r\n        \"mision\": \"{{$randomWord}}\",\r\n        \"direccion\": {\r\n            \"direccion\": \"{{$randomStreetAddress}}\",\r\n            \"ciudad\": \"{{$randomCountry}}\",\r\n            \"estado\": \"North Carolina\",\r\n            \"pais\": \"{{$randomCity}}\",\r\n            \"continente\": \"North America\",\r\n            \"codigoPostal\": \"68268-3939\",\r\n            \"coordenadas\": {\r\n                \"latitud\": {{$randomLatitude}},\r\n                \"longitud\": {{$randomLongitude}}\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/videojuegos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/videojuegos'](http://127.0.0.1:3000/videojuegos')  \n\\--header 'Content-Type: application/json'  \n\\--data '{  \n\"nombre\": \"Blass Academy\",  \n\"epoca\": 2024,  \n\"precio\": 31.3,  \n\"duracion\": 7,  \n\"genero\": \"accion\",  \n\"empresa\": {  \n\"nombre\": \"Kuphal, Kris and Lubowitz\",  \n\"paginaWeb\": \"[https://afraid-summer.net\"](https://afraid-summer.net),  \n\"mision\": \"Immersive intermediate utilisation\",  \n\"direccion\": {  \n\"direccion\": \"22257 W Pine Street\",  \n\"ciudad\": \"Carmichael\",  \n\"estado\": \"North Carolina\",  \n\"pais\": \"Malaysia\",  \n\"continente\": \"North America\",  \n\"codigoPostal\": \"68268-3939\",  \n\"coordenadas\": {  \n\"latitud\": 110.94,  \n\"longitud\": 84.64  \n}  \n}  \n}  \n}'\n\nCrea un nuevo videojuego en el sistema con los datos proporcionados en formato JSON, incluyendo información detallada de la empresa y su dirección."
+					},
+					"response": []
+				},
+				{
+					"name": "CrearVideojuego - 400",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(400);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response body 'message' contiene expected error message\", function () {\r",
+									"    pm.expect(pm.response.json().message).to.eql(\"Expected ':' after property name in JSON at position 15 (line 2 column 13)\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\"= \"{{$randomProductName}}\",\r\n    \"epoca\": 2024,\r\n    \"precio\": {{$randomPrice}},\r\n    \"duracion\": 7,\r\n    \"genero\": \"{{$randomNoun}}\",\r\n    \"empresa\": {\r\n        \"nombre\": \"{{$randomCompanyName}}\",\r\n        \"paginaWeb\": \"{{$randomUrl}}\",\r\n        \"mision\": \"{{$randomWord}}\",\r\n        \"direccion\": {\r\n            \"direccion\": \"{{$randomStreetAddress}}\",\r\n            \"ciudad\": \"{{$randomCountry}}\",\r\n            \"estado\": \"North Carolina\",\r\n            \"pais\": \"{{$randomCity}}\",\r\n            \"continente\": \"North America\",\r\n            \"codigoPostal\": \"68268-3939\",\r\n            \"coordenadas\": {\r\n                \"latitud\": {{$randomLatitude}},\r\n                \"longitud\": {{$randomLongitude}}\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/videojuegos",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos"
+							]
+						},
+						"description": "Generated from cURL: curl --location '[http://127.0.0.1:3000/videojuegos'](http://127.0.0.1:3000/videojuegos')  \n\\--header 'Content-Type: application/json'  \n\\--data '{  \n\"nombre\": \"Blass Academy\",  \n\"epoca\": 2024,  \n\"precio\": 31.3,  \n\"duracion\": 7,  \n\"genero\": \"accion\",  \n\"empresa\": {  \n\"nombre\": \"Kuphal, Kris and Lubowitz\",  \n\"paginaWeb\": \"[https://afraid-summer.net\"](https://afraid-summer.net),  \n\"mision\": \"Immersive intermediate utilisation\",  \n\"direccion\": {  \n\"direccion\": \"22257 W Pine Street\",  \n\"ciudad\": \"Carmichael\",  \n\"estado\": \"North Carolina\",  \n\"pais\": \"Malaysia\",  \n\"continente\": \"North America\",  \n\"codigoPostal\": \"68268-3939\",  \n\"coordenadas\": {  \n\"latitud\": 110.94,  \n\"longitud\": 84.64  \n}  \n}  \n}  \n}'\n\nCrea un nuevo videojuego en el sistema con los datos proporcionados en formato JSON, incluyendo información detallada de la empresa y su dirección."
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarVideojuego",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema Validation', () => {\r",
+									"    const schemaString = pm.collectionVariables.get(\"schemaVideoJuegos\");    \r",
+									"    pm.response.to.have.jsonSchema(schemaString);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Blass Academy\",\r\n    \"epoca\": 2024,\r\n    \"precio\": 31.3,\r\n    \"duracion\": 7,\r\n    \"genero\": \"accion\",\r\n    \"empresa\": {\r\n        \"nombre\": \"Kuphal, Kris and Lubowitz\",\r\n        \"paginaWeb\": \"https://afraid-summer.net\",\r\n        \"mision\": \"Immersive intermediate utilisation\",\r\n        \"direccion\": {\r\n            \"direccion\": \"22257 W Pine Street\",\r\n            \"ciudad\": \"Carmichael\",\r\n            \"estado\": \"North Carolina\",\r\n            \"pais\": \"Malaysia\",\r\n            \"continente\": \"North America\",\r\n            \"codigoPostal\": \"68268-3939\",\r\n            \"coordenadas\": {\r\n                \"latitud\": 110.94,\r\n                \"longitud\": 84.64\r\n            }\r\n        }\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/videojuegos/7",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos",
+								"7"
+							]
+						},
+						"description": "Generated from cURL: curl --location --request PUT '[http://127.0.0.1:3000/videojuegos/7'](http://127.0.0.1:3000/videojuegos/7')  \n\\--header 'Content-Type: application/json'  \n\\--data '{  \n\"nombre\": \"Blass Academy\",  \n\"epoca\": 2024,  \n\"precio\": 31.3,  \n\"duracion\": 7,  \n\"genero\": \"accion\",  \n\"empresa\": {  \n\"nombre\": \"Kuphal, Kris and Lubowitz\",  \n\"paginaWeb\": \"[https://afraid-summer.net\"](https://afraid-summer.net),  \n\"mision\": \"Immersive intermediate utilisation\",  \n\"direccion\": {  \n\"direccion\": \"22257 W Pine Street\",  \n\"ciudad\": \"Carmichael\",  \n\"estado\": \"North Carolina\",  \n\"pais\": \"Malaysia\",  \n\"continente\": \"North America\",  \n\"codigoPostal\": \"68268-3939\",  \n\"coordenadas\": {  \n\"latitud\": 110.94,  \n\"longitud\": 84.64  \n}  \n}  \n}  \n}'\n\nActualizar completamente todos los campos del videojuego identificado por el ID con la información proporcionada en formato JSON."
+					},
+					"response": []
+				},
+				{
+					"name": "ActualizarParcialmenteVideojuego",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test('Schema Validation', () => {\r",
+									"    const schemaString = pm.collectionVariables.get(\"schemaVideoJuegos\");    \r",
+									"    pm.response.to.have.jsonSchema(schemaString);\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Blass Academy\",\r\n    \"epoca\": 2024,\r\n    \"precio\": 31.3,\r\n    \"duracion\": 7,\r\n    \"genero\": \"accion\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/videojuegos/7",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos",
+								"7"
+							]
+						},
+						"description": "Generated from cURL: curl --location --request PATCH '[http://127.0.0.1:3000/videojuegos/7'](http://127.0.0.1:3000/videojuegos/7')  \n\\--header 'Content-Type: application/json'  \n\\--data '{  \n\"nombre\": \"Blass Academy\",  \n\"epoca\": 2024,  \n\"precio\": 31.3,  \n\"duracion\": 7,  \n\"genero\": \"accion\"  \n}'\n\nActualiza particialmente los datos necesarios del video juego dado un ID."
+					},
+					"response": []
+				},
+				{
+					"name": "EliminarVideojuego",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"verifies response body contains expected message\", function () {\r",
+									"    pm.expect(pm.response.json().message).to.include(\"Videojuego con id 7 se ha eliminado satisfactoriamente\");\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/videojuegos/7",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"videojuegos",
+								"7"
+							]
+						},
+						"description": "Generated from cURL: curl --location --request DELETE '[http://127.0.0.1:3000/videojuegos/7'](http://127.0.0.1:3000/videojuegos/7')\n\nEliminar el video juego seleccionado por ID"
+					},
+					"response": []
+				}
+			],
+			"description": "Este conjunto de endpoints está dedicado a la gestión de videojuegos. Permite:\n\n- Obtener la lista completa de videojuegos disponibles.\n    \n- Realizar búsquedas basadas en distintos parámetros.\n    \n- Ordenar y filtrar videojuegos para encontrar fácilmente lo que buscas.\n    \n- Consultar los detalles específicos de un videojuego.\n    \n- Crear nuevos registros de videojuegos.\n    \n- Actualizar información de videojuegos, ya sea completamente o de manera parcial.\n    \n- Eliminar videojuegos que ya no estén disponibles o sean irrelevantes.",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"const schemaVideoJuegos = {\r",
+							"  \"type\": \"object\",\r",
+							"  \"properties\": {\r",
+							"    \"id\": {\r",
+							"      \"type\": \"number\"\r",
+							"    },\r",
+							"    \"nombre\": {\r",
+							"      \"type\": \"string\",\r",
+							"      \"minLength\": 1\r",
+							"    },\r",
+							"    \"epoca\": {\r",
+							"      \"type\": \"number\"\r",
+							"    },\r",
+							"    \"precio\": {\r",
+							"      \"type\": \"number\"\r",
+							"    },\r",
+							"    \"duracion\": {\r",
+							"      \"type\": \"number\"\r",
+							"    },\r",
+							"    \"genero\": {\r",
+							"      \"type\": \"string\",\r",
+							"      \"minLength\": 1\r",
+							"    },\r",
+							"    \"empresa\": {\r",
+							"      \"type\": \"object\",\r",
+							"      \"properties\": {\r",
+							"        \"nombre\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"paginaWeb\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"mision\": {\r",
+							"          \"type\": \"string\",\r",
+							"          \"minLength\": 1\r",
+							"        },\r",
+							"        \"direccion\": {\r",
+							"          \"type\": \"object\",\r",
+							"          \"properties\": {\r",
+							"            \"direccion\": {\r",
+							"              \"type\": \"string\",\r",
+							"              \"minLength\": 1\r",
+							"            },\r",
+							"            \"ciudad\": {\r",
+							"              \"type\": \"string\",\r",
+							"              \"minLength\": 1\r",
+							"            },\r",
+							"            \"pais\": {\r",
+							"              \"type\": \"string\",\r",
+							"              \"minLength\": 1\r",
+							"            },\r",
+							"            \"continente\": {\r",
+							"              \"type\": \"string\",\r",
+							"              \"minLength\": 1\r",
+							"            },\r",
+							"            \"codigoPostal\": {\r",
+							"              \"type\": \"string\",\r",
+							"              \"minLength\": 1\r",
+							"            },\r",
+							"            \"coordenadas\": {\r",
+							"              \"type\": \"object\",\r",
+							"              \"properties\": {\r",
+							"                \"latitud\": {\r",
+							"                  \"type\": \"number\"\r",
+							"                },\r",
+							"                \"longitud\": {\r",
+							"                  \"type\": \"number\"\r",
+							"                }\r",
+							"              },\r",
+							"              \"required\": [\r",
+							"                \"latitud\",\r",
+							"                \"longitud\"\r",
+							"              ]\r",
+							"            }\r",
+							"          },\r",
+							"          \"required\": [\r",
+							"            \"direccion\",\r",
+							"            \"ciudad\",\r",
+							"            \"pais\",\r",
+							"            \"continente\",\r",
+							"            \"codigoPostal\",\r",
+							"            \"coordenadas\"\r",
+							"          ]\r",
+							"        }\r",
+							"      },\r",
+							"      \"required\": [\r",
+							"        \"nombre\",\r",
+							"        \"paginaWeb\",\r",
+							"        \"mision\",\r",
+							"        \"direccion\"\r",
+							"      ]\r",
+							"    }\r",
+							"  },\r",
+							"  \"required\": [\r",
+							"    \"id\",\r",
+							"    \"nombre\",\r",
+							"    \"epoca\",\r",
+							"    \"precio\",\r",
+							"    \"duracion\",\r",
+							"    \"genero\",\r",
+							"    \"empresa\"\r",
+							"  ]\r",
+							"}\r",
+							"pm.collectionVariables.set(\"schemaVideoJuegos\",schemaVideoJuegos)\r",
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{accessToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "login",
+			"value": "http://127.0.0.1:3000/auth/login",
+			"type": "string"
+		},
+		{
+			"key": "schemaParticipantes",
+			"value": ""
+		},
+		{
+			"key": "schemaVideoJuegos",
+			"value": ""
+		}
+	]
+}
